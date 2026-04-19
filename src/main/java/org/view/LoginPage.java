@@ -132,8 +132,12 @@ public class LoginPage extends JFrame {
     // Filter focus out for nicer look
     cardPanel.setFocusable(true);
 
-    // Action Listener
+    // Action Listener for Sign In Button
     btnLogin.addActionListener(e -> handleLogin());
+
+    // Action Listener for Enter Key on text fields
+    txtUsername.addActionListener(e -> handleLogin());
+    txtPassword.addActionListener(e -> handleLogin());
 
     mainPanel.add(cardPanel, gbc);
     add(mainPanel);
@@ -153,9 +157,19 @@ public class LoginPage extends JFrame {
     if (user != null) {
       JOptionPane.showMessageDialog(this, "Selamat datang, " + user.getUsername() + "!", "Login Berhasil",
           JOptionPane.INFORMATION_MESSAGE);
-      // Navigate to main dashboard (to be implemented)
-      // new Dashboard(user).setVisible(true);
-      // this.dispose();
+      
+      // Navigate to dashboard based on role_id
+      if (user.getRoleId() == 1) {
+          // Role 1 = Admin
+          new AdminDashboard(user).setVisible(true);
+          this.dispose();
+      } else if (user.getRoleId() == 2) {
+          // Role 2 = Kasir
+          new DashboardKasir(user).setVisible(true);
+          this.dispose();
+      } else {
+          JOptionPane.showMessageDialog(this, "Role tidak dikenali. Akses ditolak.", "Error", JOptionPane.ERROR_MESSAGE);
+      }
     } else {
       JOptionPane.showMessageDialog(this, "Username atau password salah!", "Login Gagal", JOptionPane.ERROR_MESSAGE);
     }
