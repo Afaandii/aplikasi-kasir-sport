@@ -46,15 +46,22 @@ public class AdminDashboard extends JFrame {
         JPanel sidebar = createSidebar();
         basePanel.add(sidebar, BorderLayout.WEST);
 
-        // Main Content Area
+        // Container for Main Content with Persistent Header
+        JPanel contentArea = new JPanel(new BorderLayout());
+        contentArea.setBackground(MAIN_BG);
+        
+        // Add Persistent Header
+        contentArea.add(createPersistentHeader(), BorderLayout.NORTH);
+
+        // Main Content Area (Cards)
         cardLayout = new CardLayout();
         mainContentPanel = new JPanel(cardLayout);
-        mainContentPanel.setBackground(MAIN_BG);
+        mainContentPanel.setOpaque(false);
 
         // Add views
         mainContentPanel.add(createDashboardOverview(), "Dashboard");
-        mainContentPanel.add(createPlaceholder("Kategori"), "Kategori");
-        mainContentPanel.add(createPlaceholder("Merek"), "Merek");
+        mainContentPanel.add(new KategoriManagementPanel(), "Kategori");
+        mainContentPanel.add(new MerekManagementPanel(), "Merek");
         mainContentPanel.add(createPlaceholder("Produk & Varian"), "Produk");
         mainContentPanel.add(createPlaceholder("Ukuran"), "Ukuran");
         mainContentPanel.add(createPlaceholder("Warna"), "Warna");
@@ -62,8 +69,30 @@ public class AdminDashboard extends JFrame {
         mainContentPanel.add(createPlaceholder("Transaksi"), "Transaksi");
         mainContentPanel.add(createPlaceholder("Laporan Keuangan"), "Laporan");
 
-        basePanel.add(mainContentPanel, BorderLayout.CENTER);
+        contentArea.add(mainContentPanel, BorderLayout.CENTER);
+        
+        basePanel.add(contentArea, BorderLayout.CENTER);
         add(basePanel);
+    }
+
+    private JPanel createPersistentHeader() {
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.setBorder(new EmptyBorder(30, 40, 40, 40));
+
+        JLabel lblTitle = new JLabel("Admin Dashboard");
+        lblTitle.setFont(new Font("Inter", Font.BOLD, 24));
+        lblTitle.setForeground(Color.WHITE);
+
+        JLabel lblWelcome = new JLabel(
+                "Selamat Datang, " + (loggedInUser != null ? loggedInUser.getUsername() : "admin"));
+        lblWelcome.setFont(new Font("Inter", Font.PLAIN, 14));
+        lblWelcome.setForeground(new Color(170, 170, 170));
+
+        headerPanel.add(lblTitle, BorderLayout.WEST);
+        headerPanel.add(lblWelcome, BorderLayout.EAST);
+
+        return headerPanel;
     }
 
     private JPanel createSidebar() {
@@ -160,26 +189,8 @@ public class AdminDashboard extends JFrame {
 
     private JPanel createDashboardOverview() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(MAIN_BG);
+        panel.setOpaque(false);
         panel.setBorder(new EmptyBorder(30, 40, 30, 40));
-
-        // Top Header
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setOpaque(false);
-
-        JLabel lblTitle = new JLabel("Admin Dashboard");
-        lblTitle.setFont(new Font("Inter", Font.BOLD, 24));
-        lblTitle.setForeground(Color.WHITE);
-
-        JLabel lblWelcome = new JLabel(
-                "Selamat Datang, " + (loggedInUser != null ? loggedInUser.getUsername() : "admin"));
-        lblWelcome.setFont(new Font("Inter", Font.PLAIN, 14));
-        lblWelcome.setForeground(new Color(170, 170, 170));
-
-        headerPanel.add(lblTitle, BorderLayout.WEST);
-        headerPanel.add(lblWelcome, BorderLayout.EAST);
-
-        panel.add(headerPanel, BorderLayout.NORTH);
 
         // Overview Section
         JPanel overviewContainer = new JPanel(new BorderLayout());
