@@ -12,15 +12,15 @@ public class Database {
     private static Connection connection;
 
     public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                // Register MySQL Driver (optional for modern JDBC but good for compatibility)
+        try {
+            if (connection == null || connection.isClosed()) {
+                // Register MySQL Driver
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
                 System.out.println("Koneksi Berhasil!");
-            } catch (ClassNotFoundException | SQLException e) {
-                System.err.println("Koneksi Gagal: " + e.getMessage());
             }
+        } catch (ClassNotFoundException | SQLException e) {
+            System.err.println("Koneksi Gagal: " + e.getMessage());
         }
         return connection;
     }
