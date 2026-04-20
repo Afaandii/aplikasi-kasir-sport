@@ -49,7 +49,7 @@ public class AdminDashboard extends JFrame {
         // Container for Main Content with Persistent Header
         JPanel contentArea = new JPanel(new BorderLayout());
         contentArea.setBackground(MAIN_BG);
-        
+
         // Add Persistent Header
         contentArea.add(createPersistentHeader(), BorderLayout.NORTH);
 
@@ -63,14 +63,14 @@ public class AdminDashboard extends JFrame {
         mainContentPanel.add(new KategoriManagementPanel(), "Kategori");
         mainContentPanel.add(new MerekManagementPanel(), "Merek");
         mainContentPanel.add(createPlaceholder("Produk & Varian"), "Produk");
-        mainContentPanel.add(createPlaceholder("Ukuran"), "Ukuran");
-        mainContentPanel.add(createPlaceholder("Warna"), "Warna");
+        mainContentPanel.add(new UkuranManagementPanel(), "Ukuran");
+        mainContentPanel.add(new WarnaManagementPanel(), "Warna");
         mainContentPanel.add(createPlaceholder("Users"), "Users");
         mainContentPanel.add(createPlaceholder("Transaksi"), "Transaksi");
         mainContentPanel.add(createPlaceholder("Laporan Keuangan"), "Laporan");
 
         contentArea.add(mainContentPanel, BorderLayout.CENTER);
-        
+
         basePanel.add(contentArea, BorderLayout.CENTER);
         add(basePanel);
     }
@@ -134,8 +134,6 @@ public class AdminDashboard extends JFrame {
         menuPanel.add(createNavButton("Warna", "Warna"));
         menuPanel.add(Box.createVerticalStrut(2));
         menuPanel.add(createNavButton("Users", "Users"));
-        menuPanel.add(Box.createVerticalStrut(2));
-        menuPanel.add(createNavButton("Transaksi", "Transaksi"));
         menuPanel.add(Box.createVerticalStrut(2));
         menuPanel.add(createNavButton("Laporan Keuangan", "Laporan"));
 
