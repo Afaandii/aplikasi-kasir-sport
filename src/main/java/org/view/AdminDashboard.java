@@ -65,8 +65,7 @@ public class AdminDashboard extends JFrame {
         mainContentPanel.add(createPlaceholder("Produk & Varian"), "Produk");
         mainContentPanel.add(new UkuranManagementPanel(), "Ukuran");
         mainContentPanel.add(new WarnaManagementPanel(), "Warna");
-        mainContentPanel.add(createPlaceholder("Users"), "Users");
-        mainContentPanel.add(createPlaceholder("Transaksi"), "Transaksi");
+        mainContentPanel.add(new UserManagementPanel(), "Users");
         mainContentPanel.add(createPlaceholder("Laporan Keuangan"), "Laporan");
 
         contentArea.add(mainContentPanel, BorderLayout.CENTER);
