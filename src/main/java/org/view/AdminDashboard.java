@@ -62,7 +62,7 @@ public class AdminDashboard extends JFrame {
         mainContentPanel.add(createDashboardOverview(), "Dashboard");
         mainContentPanel.add(new KategoriManagementPanel(), "Kategori");
         mainContentPanel.add(new MerekManagementPanel(), "Merek");
-        mainContentPanel.add(createPlaceholder("Produk & Varian"), "Produk");
+        mainContentPanel.add(new ProdukManagementPanel(), "Produk");
         mainContentPanel.add(new UkuranManagementPanel(), "Ukuran");
         mainContentPanel.add(new WarnaManagementPanel(), "Warna");
         mainContentPanel.add(new UserManagementPanel(), "Users");
