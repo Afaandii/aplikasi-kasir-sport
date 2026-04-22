@@ -116,7 +116,7 @@ public class DashboardKasir extends JFrame {
 
         JButton btnKatalog = createMenuButton("Katalog Produk", true);
         JButton btnLaporan = createMenuButton("Laporan Saya", false);
-        
+
         btnLaporan.addActionListener(e -> showLaporanModal());
 
         menuPanel.add(btnKatalog);
@@ -157,10 +157,10 @@ public class DashboardKasir extends JFrame {
         btn.setFont(new Font("Inter", Font.BOLD, 14));
         btn.setPreferredSize(new Dimension(0, 100));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+
         String bg = active ? "#3b82f6" : "#252527";
         String fg = active ? "#ffffff" : "#dddddd";
-        
+
         btn.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background: " + bg + ";" +
                 "foreground: " + fg + ";" +
@@ -209,9 +209,17 @@ public class DashboardKasir extends JFrame {
         txtSearch.putClientProperty(FlatClientProperties.STYLE, "arc: 10; showClearButton: true;");
         txtSearch.setPreferredSize(new Dimension(250, 42));
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) { filterProducts(); }
-            public void removeUpdate(DocumentEvent e) { filterProducts(); }
-            public void changedUpdate(DocumentEvent e) { filterProducts(); }
+            public void insertUpdate(DocumentEvent e) {
+                filterProducts();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                filterProducts();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                filterProducts();
+            }
         });
         gbc.gridx = 0;
         gbc.weightx = 0.0;
@@ -222,7 +230,8 @@ public class DashboardKasir extends JFrame {
         btnSearch.setFont(new Font("Inter", Font.BOLD, 14));
         btnSearch.setPreferredSize(new Dimension(80, 42));
         btnSearch.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnSearch.putClientProperty(FlatClientProperties.STYLE, "background: #3b82f6; foreground: #ffffff; arc: 10; borderWidth: 0;");
+        btnSearch.putClientProperty(FlatClientProperties.STYLE,
+                "background: #3b82f6; foreground: #ffffff; arc: 10; borderWidth: 0;");
         btnSearch.addActionListener(e -> filterProducts());
         gbc.gridx = 1;
         filterBar.add(btnSearch, gbc);
@@ -234,8 +243,10 @@ public class DashboardKasir extends JFrame {
         loadCategoryDropdown();
         cbKategori.addActionListener(e -> {
             int idx = cbKategori.getSelectedIndex();
-            if (idx == 0) selectedKategoriId = -1;
-            else if (idx > 0) selectedKategoriId = categoryList.get(idx - 1).getIdKategori();
+            if (idx == 0)
+                selectedKategoriId = -1;
+            else if (idx > 0)
+                selectedKategoriId = categoryList.get(idx - 1).getIdKategori();
             filterProducts();
         });
         gbc.gridx = 2;
@@ -304,7 +315,7 @@ public class DashboardKasir extends JFrame {
         // Thumbnail
         JLabel lblImg = new JLabel();
         lblImg.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         try {
             String path = "/thumbnail/" + p.getThumbnail();
             URL imgUrl = getClass().getResource(path);
@@ -318,7 +329,8 @@ public class DashboardKasir extends JFrame {
                 lblImg.setFont(new Font("Inter", Font.PLAIN, 10));
                 lblImg.setForeground(Color.GRAY);
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         card.add(lblImg, BorderLayout.CENTER);
 
         // Info
@@ -351,9 +363,9 @@ public class DashboardKasir extends JFrame {
         List<Produk> filtered = new ArrayList<>();
         for (Produk p : allProducts) {
             boolean matchCategory = (selectedKategoriId == -1 || p.getKategoriId() == selectedKategoriId);
-            boolean matchSearch = p.getNamaProduk().toLowerCase().contains(query) || 
-                                  p.getMerekNama().toLowerCase().contains(query);
-            
+            boolean matchSearch = p.getNamaProduk().toLowerCase().contains(query) ||
+                    p.getMerekNama().toLowerCase().contains(query);
+
             if (matchCategory && matchSearch) {
                 filtered.add(p);
             }
@@ -389,13 +401,14 @@ public class DashboardKasir extends JFrame {
         for (Varian v : variants) {
             JButton btnSize = new JButton(v.getUkuranNama() + " - " + v.getWarnaNama());
             btnSize.setFont(new Font("Inter", Font.PLAIN, 12));
-            
+
             if (v.getStokProduk() <= 0) {
                 btnSize.setEnabled(false);
                 btnSize.setText(v.getUkuranNama() + " (Habis)");
             }
 
-            btnSize.putClientProperty(FlatClientProperties.STYLE, "background: #252527; foreground: #dddddd; arc: 10; hoverBackground: #3b82f6;");
+            btnSize.putClientProperty(FlatClientProperties.STYLE,
+                    "background: #252527; foreground: #dddddd; arc: 10; hoverBackground: #3b82f6;");
 
             btnSize.addActionListener(e -> {
                 addToCart(p, v);
@@ -408,7 +421,7 @@ public class DashboardKasir extends JFrame {
         scroll.setBorder(null);
         scroll.getViewport().setOpaque(false);
         scroll.setOpaque(false);
-        
+
         main.add(scroll, BorderLayout.CENTER);
         dialog.add(main);
         dialog.setVisible(true);
@@ -436,7 +449,7 @@ public class DashboardKasir extends JFrame {
         dt.setHargaSatuan(p.getHargaJual());
         dt.setJumlah(1);
         dt.setSubtotal(p.getHargaJual());
-        
+
         cartItems.add(dt);
         updateCartTable();
     }
@@ -445,11 +458,12 @@ public class DashboardKasir extends JFrame {
         cartModel.setRowCount(0);
         int total = 0;
         for (DetailTransaksi dt : cartItems) {
-            cartModel.addRow(new Object[]{
+            cartModel.addRow(new Object[] {
                     dt.getNamaProduk(),
                     dt.getUkuranNama() + "/" + dt.getWarnaNama(),
                     dt.getJumlah(),
-                    rbFormat.format(dt.getSubtotal())
+                    rbFormat.format(dt.getSubtotal()),
+                    "" // Column for Trash/Delete button
             });
             total += dt.getSubtotal();
         }
@@ -463,40 +477,25 @@ public class DashboardKasir extends JFrame {
         }
 
         int total = 0;
-        for (DetailTransaksi dt : cartItems) total += dt.getSubtotal();
+        for (DetailTransaksi dt : cartItems)
+            total += dt.getSubtotal();
 
-        String input = JOptionPane.showInputDialog(this, "Total: " + rbFormat.format(total) + "\nBayar:", "Konfirmasi Bayar", JOptionPane.PLAIN_MESSAGE);
-        if (input == null || input.isEmpty()) return;
-
-        try {
-            int bayar = Integer.parseInt(input);
-            if (bayar < total) {
-                JOptionPane.showMessageDialog(this, "Uang Kurang!");
-                return;
-            }
-
-            int kembalian = bayar - total;
-
-            org.model.Transaksi t = new org.model.Transaksi();
-            t.setUserId(loggedInUser.getId());
-            t.setKodeTransaksi(transaksiDAO.generateNextCode());
-            t.setNamaCustomer(txtCustomer.getText().isEmpty() ? "Umum" : txtCustomer.getText());
-            t.setTotalPembayaran(total);
-            t.setUangMasuk(bayar);
-            t.setKembalian(kembalian);
-            t.setMetodePembayaran("Cash");
-            t.setStatus("Selesai");
-
-            if (transaksiDAO.saveTransaction(t, cartItems)) {
-                JOptionPane.showMessageDialog(this, "Berhasil!\nKembalian: " + rbFormat.format(kembalian));
+        // Use the new professional CheckoutModal
+        CheckoutModal modal = new CheckoutModal(
+            this, 
+            loggedInUser, 
+            total, 
+            new ArrayList<>(cartItems), // Pass a copy to avoid concurrency issues
+            txtCustomer.getText(), 
+            () -> {
+                // Success Callback: Reset UI
                 cartItems.clear();
                 updateCartTable();
                 txtCustomer.setText("");
-                loadProducts();
+                loadProducts(); // Refresh products (stock changed)
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Input tidak valid!");
-        }
+        );
+        modal.setVisible(true);
     }
 
     private JPanel createCartSection() {
@@ -512,16 +511,32 @@ public class DashboardKasir extends JFrame {
         cartPanel.add(lblCartTitle, BorderLayout.NORTH);
 
         // Table Cart
-        String[] cols = { "Produk", "Varian", "Qty", "Total" };
+        String[] cols = { "Produk", "Varian", "Qty", "Total", "" };
         cartModel = new DefaultTableModel(cols, 0) {
-            public boolean isCellEditable(int r, int c) { return false; }
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return c == 2 || c == 4; // Qty and Trash column are editable
+            }
         };
         tblCart = new JTable(cartModel);
         tblCart.setBackground(SIDEBAR_BG);
         tblCart.setForeground(Color.WHITE);
         tblCart.setShowGrid(false);
-        tblCart.setRowHeight(45);
-        
+        tblCart.setRowHeight(50);
+        tblCart.setSelectionBackground(SIDEBAR_BG); // Remove blue selection mark
+        tblCart.setSelectionForeground(Color.WHITE);
+        tblCart.setFocusable(false);
+
+        // Setup Qty Column
+        tblCart.getColumnModel().getColumn(2).setCellRenderer(new QtyCellRenderer());
+        tblCart.getColumnModel().getColumn(2).setCellEditor(new QtyCellEditor());
+        tblCart.getColumnModel().getColumn(2).setPreferredWidth(100);
+
+        // Setup Trash/Action Column
+        tblCart.getColumnModel().getColumn(4).setCellRenderer(new TrashCellRenderer());
+        tblCart.getColumnModel().getColumn(4).setCellEditor(new TrashCellEditor());
+        tblCart.getColumnModel().getColumn(4).setPreferredWidth(50);
+
         JScrollPane scrollCart = new JScrollPane(tblCart);
         scrollCart.getViewport().setBackground(SIDEBAR_BG);
         scrollCart.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(45, 45, 45)));
@@ -551,7 +566,8 @@ public class DashboardKasir extends JFrame {
         btnCheckout.setFont(new Font("Inter", Font.BOLD, 16));
         btnCheckout.setPreferredSize(new Dimension(0, 55));
         btnCheckout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnCheckout.putClientProperty(FlatClientProperties.STYLE, "background: #3b82f6; foreground: #ffffff; arc: 12; borderWidth: 0;");
+        btnCheckout.putClientProperty(FlatClientProperties.STYLE,
+                "background: #3b82f6; foreground: #ffffff; arc: 12; borderWidth: 0;");
         btnCheckout.addActionListener(e -> handleCheckout());
 
         bottomPanel.add(txtCustomer);
@@ -563,12 +579,172 @@ public class DashboardKasir extends JFrame {
         return cartPanel;
     }
 
+    // --- Inner Classes for Interactive Table Columns ---
+
+    class QtyCellRenderer extends JPanel implements javax.swing.table.TableCellRenderer {
+        private final JButton btnMinus = new JButton("-");
+        private final JButton btnPlus = new JButton("+");
+        private final JLabel lblQty = new JLabel("1", SwingConstants.CENTER);
+
+        public QtyCellRenderer() {
+            setOpaque(true);
+            setBackground(SIDEBAR_BG);
+            setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+            styleButton(btnMinus, false);
+            styleButton(btnPlus, true);
+            lblQty.setForeground(Color.WHITE);
+            lblQty.setPreferredSize(new Dimension(20, 30));
+            add(btnMinus);
+            add(lblQty);
+            add(btnPlus);
+        }
+
+        private void styleButton(JButton btn, boolean isPlus) {
+            btn.setPreferredSize(new Dimension(28, 28));
+            String activeBg = isPlus ? "#3b82f6" : "#444446";
+            btn.putClientProperty(FlatClientProperties.STYLE,
+                    "arc: 8; background: " + activeBg + "; foreground: #ffffff; borderWidth: 0;");
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
+            int qty = (int) value;
+            lblQty.setText(String.valueOf(qty));
+            btnMinus.setEnabled(qty > 1);
+            setBackground(SIDEBAR_BG);
+            return this;
+        }
+    }
+
+    class QtyCellEditor extends AbstractCellEditor implements javax.swing.table.TableCellEditor {
+        private final JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        private final JButton btnMinus = new JButton("-");
+        private final JButton btnPlus = new JButton("+");
+        private final JLabel lblQty = new JLabel("1", SwingConstants.CENTER);
+        private int currentValue;
+        private int currentRow;
+
+        public QtyCellEditor() {
+            panel.setOpaque(true);
+            panel.setBackground(SIDEBAR_BG);
+            styleButton(btnMinus, false);
+            styleButton(btnPlus, true);
+            lblQty.setForeground(Color.WHITE);
+            lblQty.setPreferredSize(new Dimension(20, 30));
+
+            btnPlus.addActionListener(e -> {
+                DetailTransaksi dt = cartItems.get(currentRow);
+                dt.setJumlah(dt.getJumlah() + 1);
+                dt.setSubtotal(dt.getJumlah() * dt.getHargaSatuan());
+                lblQty.setText(String.valueOf(dt.getJumlah()));
+                btnMinus.setEnabled(true);
+                cartModel.setValueAt(dt.getJumlah(), currentRow, 2);
+                cartModel.setValueAt(rbFormat.format(dt.getSubtotal()), currentRow, 3);
+                calculateTotal();
+            });
+
+            btnMinus.addActionListener(e -> {
+                DetailTransaksi dt = cartItems.get(currentRow);
+                if (dt.getJumlah() > 1) {
+                    dt.setJumlah(dt.getJumlah() - 1);
+                    dt.setSubtotal(dt.getJumlah() * dt.getHargaSatuan());
+                    lblQty.setText(String.valueOf(dt.getJumlah()));
+                    btnMinus.setEnabled(dt.getJumlah() > 1);
+                    cartModel.setValueAt(dt.getJumlah(), currentRow, 2);
+                    cartModel.setValueAt(rbFormat.format(dt.getSubtotal()), currentRow, 3);
+                    calculateTotal();
+                }
+            });
+
+            panel.add(btnMinus);
+            panel.add(lblQty);
+            panel.add(btnPlus);
+        }
+
+        private void styleButton(JButton btn, boolean isPlus) {
+            btn.setPreferredSize(new Dimension(28, 28));
+            String activeBg = isPlus ? "#3b82f6" : "#444446";
+            btn.putClientProperty(FlatClientProperties.STYLE,
+                    "arc: 8; background: " + activeBg + "; foreground: #ffffff; borderWidth: 0;");
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+                int column) {
+            currentValue = (int) value;
+            currentRow = row;
+            lblQty.setText(String.valueOf(currentValue));
+            btnMinus.setEnabled(currentValue > 1);
+            return panel;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return currentValue;
+        }
+    }
+
+    class TrashCellRenderer extends JButton implements javax.swing.table.TableCellRenderer {
+        public TrashCellRenderer() {
+            setOpaque(true);
+            setBackground(SIDEBAR_BG);
+            setText("X");
+            setForeground(new Color(239, 68, 68));
+            setFont(new Font("Inter", Font.BOLD, 14));
+            putClientProperty(FlatClientProperties.STYLE, "background: #252527; arc: 8; borderWidth: 0;");
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, 
+                int row, int column) {
+            return this;
+        }
+    }
+
+    class TrashCellEditor extends AbstractCellEditor implements javax.swing.table.TableCellEditor {
+        private final JButton btnDelete = new JButton("X");
+        private int currentRow;
+
+        public TrashCellEditor() {
+            btnDelete.setForeground(new Color(239, 68, 68));
+            btnDelete.setFont(new Font("Inter", Font.BOLD, 14));
+            btnDelete.putClientProperty(FlatClientProperties.STYLE, "background: #252527; arc: 8; borderWidth: 0;");
+            btnDelete.addActionListener(e -> {
+                cartItems.remove(currentRow);
+                updateCartTable();
+                calculateTotal();
+                fireEditingStopped();
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            currentRow = row;
+            return btnDelete;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "";
+        }
+    }
+
+    private void calculateTotal() {
+        int total = 0;
+        for (DetailTransaksi dt : cartItems) {
+            total += dt.getSubtotal();
+        }
+        lblTotal.setText(rbFormat.format(total));
+    }
+
     private void showLaporanModal() {
         new LaporanKasirModal(this, loggedInUser).setVisible(true);
     }
 
     private void handleLogout() {
-        if (JOptionPane.showConfirmDialog(this, "Logout?", "Konfirmasi", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        if (JOptionPane.showConfirmDialog(this, "Logout?", "Konfirmasi",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             new LoginPage().setVisible(true);
             this.dispose();
         }
