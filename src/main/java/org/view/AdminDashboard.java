@@ -66,7 +66,7 @@ public class AdminDashboard extends JFrame {
         mainContentPanel.add(new UkuranManagementPanel(), "Ukuran");
         mainContentPanel.add(new WarnaManagementPanel(), "Warna");
         mainContentPanel.add(new UserManagementPanel(), "Users");
-        mainContentPanel.add(createPlaceholder("Laporan Keuangan"), "Laporan");
+        mainContentPanel.add(new LaporanKeuanganPanel(), "Laporan");
 
         contentArea.add(mainContentPanel, BorderLayout.CENTER);
 
@@ -270,15 +270,15 @@ public class AdminDashboard extends JFrame {
         return card;
     }
 
-    private JPanel createPlaceholder(String text) {
-        JPanel p = new JPanel(new GridBagLayout());
-        p.setBackground(MAIN_BG);
-        JLabel l = new JLabel("Halaman " + text + " - Dalam Pengembangan");
-        l.setForeground(Color.WHITE);
-        l.setFont(new Font("Inter", Font.PLAIN, 24));
-        p.add(l);
-        return p;
-    }
+    // private JPanel createPlaceholder(String text) {
+    // JPanel p = new JPanel(new GridBagLayout());
+    // p.setBackground(MAIN_BG);
+    // JLabel l = new JLabel("Halaman " + text + " - Dalam Pengembangan");
+    // l.setForeground(Color.WHITE);
+    // l.setFont(new Font("Inter", Font.PLAIN, 24));
+    // p.add(l);
+    // return p;
+    // }
 
     private void handleLogout() {
         int confirm = JOptionPane.showConfirmDialog(this, "Yakin ingin keluar?", "Konfirmasi Logout",

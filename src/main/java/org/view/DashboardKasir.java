@@ -28,7 +28,6 @@ public class DashboardKasir extends JFrame {
     private User loggedInUser;
     private ProdukDAO produkDAO = new ProdukDAO();
     private VarianDAO varianDAO = new VarianDAO();
-    private TransaksiDAO transaksiDAO = new TransaksiDAO();
     private KategoriDAO kategoriDAO = new KategoriDAO();
 
     private List<Produk> allProducts;
@@ -482,19 +481,18 @@ public class DashboardKasir extends JFrame {
 
         // Use the new professional CheckoutModal
         CheckoutModal modal = new CheckoutModal(
-            this, 
-            loggedInUser, 
-            total, 
-            new ArrayList<>(cartItems), // Pass a copy to avoid concurrency issues
-            txtCustomer.getText(), 
-            () -> {
-                // Success Callback: Reset UI
-                cartItems.clear();
-                updateCartTable();
-                txtCustomer.setText("");
-                loadProducts(); // Refresh products (stock changed)
-            }
-        );
+                this,
+                loggedInUser,
+                total,
+                new ArrayList<>(cartItems), // Pass a copy to avoid concurrency issues
+                txtCustomer.getText(),
+                () -> {
+                    // Success Callback: Reset UI
+                    cartItems.clear();
+                    updateCartTable();
+                    txtCustomer.setText("");
+                    loadProducts(); // Refresh products (stock changed)
+                });
         modal.setVisible(true);
     }
 
@@ -696,7 +694,7 @@ public class DashboardKasir extends JFrame {
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, 
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
                 int row, int column) {
             return this;
         }
@@ -719,7 +717,8 @@ public class DashboardKasir extends JFrame {
         }
 
         @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+                int column) {
             currentRow = row;
             return btnDelete;
         }

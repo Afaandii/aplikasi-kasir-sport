@@ -20,7 +20,7 @@ public class LaporanKasirModal extends JDialog {
     private JTable table;
     private DefaultTableModel model;
     private JLabel lblTotalPenjualan;
-    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("id-ID"));
 
     public LaporanKasirModal(JFrame parent, User user) {
         super(parent, "Laporan Penjualan Saya Hari Ini", true);
