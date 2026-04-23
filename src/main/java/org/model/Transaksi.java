@@ -55,4 +55,8 @@ public class Transaksi {
 
     public String getKasirNama() { return kasirNama; }
     public void setKasirNama(String kasirNama) { this.kasirNama = kasirNama; }
+
+    private int totalItem;
+    public int getTotalItem() { return totalItem; }
+    public void setTotalItem(int totalItem) { this.totalItem = totalItem; }
 }
