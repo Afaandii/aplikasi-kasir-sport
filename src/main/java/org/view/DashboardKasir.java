@@ -3,7 +3,6 @@ package org.view;
 import com.formdev.flatlaf.FlatClientProperties;
 import org.dao.KategoriDAO;
 import org.dao.ProdukDAO;
-import org.dao.TransaksiDAO;
 import org.dao.VarianDAO;
 import org.model.DetailTransaksi;
 import org.model.Kategori;
@@ -50,7 +49,7 @@ public class DashboardKasir extends JFrame {
     private final Color CARD_BG = new Color(38, 38, 40);
     private final Color ACCENT_BLUE = new Color(59, 130, 246);
 
-    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(Locale.of("id", "ID"));
 
     public DashboardKasir(User user) {
         this.loggedInUser = user;

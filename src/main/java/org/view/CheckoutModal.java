@@ -23,7 +23,7 @@ public class CheckoutModal extends JDialog {
 
     private String selectedMethod = "Tunai";
     private int amountPaid = 0;
-    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(Locale.of("id", "ID"));
     private final TransaksiDAO transaksiDAO = new TransaksiDAO();
 
     // UI Components

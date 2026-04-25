@@ -1,6 +1,5 @@
 package org.view;
 
-// import com.formdev.flatlaf.FlatClientProperties;
 import org.model.DetailTransaksi;
 import org.model.Transaksi;
 
@@ -17,7 +16,7 @@ public class StrukModal extends JDialog {
     private final Transaksi transaksi;
     private final List<DetailTransaksi> items;
     private final String kasirName;
-    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+    private final NumberFormat rbFormat = NumberFormat.getCurrencyInstance(Locale.of("id", "ID"));
     private final SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public StrukModal(Window parent, Transaksi t, List<DetailTransaksi> items, String kasirName) {
